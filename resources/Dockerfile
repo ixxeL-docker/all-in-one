@@ -109,3 +109,5 @@ RUN npm install -g install-peerdeps \
                    eslint \
                    jshint \
                    snyk@latest
+
+ENTRYPOINT ["tail", "-f", "/dev/null"]
