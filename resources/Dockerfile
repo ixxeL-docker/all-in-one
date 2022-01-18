@@ -117,6 +117,8 @@ RUN apk update --no-cache \
     echo "./krew-linux_amd64 install krew"; \
     echo "set -e temp_dir"; \
     } > install-krew.sh \
+    && fish -c "chmod +x ./install.sh" \
+    && fish -c "./install.sh" \
     && fish -c "echo 'set -gx PATH $PATH $HOME/.krew/bin' >> ~/.config/fish/config.fish" \
     && fish -c "kubectl krew install ctx" \
     && fish -c "kubectl krew install ns" \
