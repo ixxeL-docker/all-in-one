@@ -52,7 +52,7 @@ LABEL maintainer="Frederic Spiers <fredspiers@gmail.com>" \
       component="CI/CD tools"
 
 ENV TZ="Europe/Paris" \
-    IMG_VERSION="1.0.0"
+    IMG_VERSION="2.0.0"
 
 COPY --from=builder /bin/oc /bin/
 COPY --from=builder /usr/local/bin/kube-score \
@@ -69,8 +69,6 @@ COPY --from=builder /usr/local/bin/kube-score \
                     /usr/local/bin/helm \
                     /usr/local/bin/kubectl \
                     /usr/local/bin/
-
-COPY ./krew .
 
 RUN apk update --no-cache \
     && apk upgrade --no-cache \
@@ -111,11 +109,24 @@ RUN apk update --no-cache \
     && fish -c "curl -sL https://git.io/fisher | source && fisher install jorgebucaran/fisher" \
     && fish -c "fisher install jethrokuan/fzf" \
     && fish -c "fisher install evanlucas/fish-kubectl-completions" \
-    && fish -c "./krew" \
+    && { \
+    echo "#!/usr/bin/fish"; \
+    echo "set -x; set temp_dir (mktemp -d); cd $temp_dir"; \
+    echo "curl -fsSLO https://github.com/kubernetes-sigs/krew/releases/latest/download/krew-linux_amd64.tar.gz"; \
+    echo "tar zxvf krew-linux_amd64.tar.gz"; \
+    echo "./krew-linux_amd64 install krew"; \
+    echo "set -e temp_dir"; \
+    } > install-krew.sh \
     && fish -c "echo 'set -gx PATH $PATH $HOME/.krew/bin' >> ~/.config/fish/config.fish" \
     && fish -c "kubectl krew install ctx" \
     && fish -c "kubectl krew install ns" \
-    && fish -c "kubectl krew install neat"    
+    && fish -c "kubectl krew install neat" \
+    && { \
+    echo "function k --wraps kubectl"; \
+    echo "  kubectl $argv"; \
+    echo "end"; \
+    } > /root/.config/fish/functions/k.fish
+
 
 RUN pip3 install --no-cache-dir flake8 flake8-json pytest pytest-cov coverage bandit yamlfix
 
