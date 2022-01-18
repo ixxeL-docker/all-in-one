@@ -70,8 +70,6 @@ COPY --from=builder /usr/local/bin/kube-score \
                     /usr/local/bin/kubectl \
                     /usr/local/bin/
 
-COPY ./krew .
-
 RUN apk update --no-cache \
     && apk upgrade --no-cache \
     && apk add --no-cache --update \
@@ -95,27 +93,13 @@ RUN apk update --no-cache \
     yamllint \
     nodejs \
     npm \
-    fish \
-    fzf \
     tzdata \
     && cp /usr/share/zoneinfo/${TZ} /etc/localtime \
     && rm -f /var/lib/containers/storage/libpod/bolt_state.db \
     && sed -i "s/driver = \"overlay\"/driver = \"vfs\"/" /etc/containers/storage.conf \
     && pip3 install --no-cache-dir awxkit ansible-tower-cli \
     && apk add trivy --no-cache --update --repository=http://dl-cdn.alpinelinux.org/alpine/edge/testing \
-    && ln -s /usr/bin/python3 /usr/bin/python \
-    && curl -sLO "https://raw.githubusercontent.com/oh-my-fish/oh-my-fish/master/bin/install" \
-    && fish install --noninteractive \
-    && rm install \
-    && fish -c "omf install fisk" \
-    && fish -c "curl -sL https://git.io/fisher | source && fisher install jorgebucaran/fisher" \
-    && fish -c "fisher install jethrokuan/fzf" \
-    && fish -c "fisher install evanlucas/fish-kubectl-completions" \
-    && fish -c "./krew" \
-    && fish -c "echo 'set -gx PATH $PATH $HOME/.krew/bin' >> ~/.config/fish/config.fish" \
-    && fish -c "kubectl krew install ctx" \
-    && fish -c "kubectl krew install ns" \
-    && fish -c "kubectl krew install neat"    
+    && ln -s /usr/bin/python3 /usr/bin/python
 
 RUN pip3 install --no-cache-dir flake8 flake8-json pytest pytest-cov coverage bandit yamlfix
 
