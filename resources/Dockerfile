@@ -99,7 +99,6 @@ RUN apk update --no-cache \
     && cp /usr/share/zoneinfo/${TZ} /etc/localtime \
     && rm -f /var/lib/containers/storage/libpod/bolt_state.db \
     && sed -i "s/driver = \"overlay\"/driver = \"vfs\"/" /etc/containers/storage.conf \
-    && pip3 install --no-cache-dir awxkit ansible-tower-cli \
     && apk add trivy --no-cache --update --repository=http://dl-cdn.alpinelinux.org/alpine/edge/testing \
     && ln -s /usr/bin/python3 /usr/bin/python \
     && curl -sLO "https://raw.githubusercontent.com/oh-my-fish/oh-my-fish/master/bin/install" \
@@ -130,7 +129,16 @@ RUN apk update --no-cache \
     } > /root/.config/fish/functions/k.fish
 
 
-RUN pip3 install --no-cache-dir flake8 flake8-json pytest pytest-cov coverage bandit yamlfix
+RUN pip3 install --upgrade pip \
+   && pip3 install --no-cache-dir flake8 \
+                                  flake8-json \
+                                  pytest \
+                                  pytest-cov \
+                                  coverage \
+                                  bandit \
+                                  yamlfix \
+                                  awxkit \
+                                  ansible-tower-cli
 
 RUN npm install -g install-peerdeps \
                    @prantlf/jsonlint \
