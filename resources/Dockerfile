@@ -16,7 +16,7 @@ RUN apk update --no-cache \
     && curl -sSL "https://get.helm.sh/helm-${HELM_VERSION}-linux-amd64.tar.gz" | tar xzv \
     && mv linux-amd64/helm /usr/local/bin/helm \
     && curl -sSL "https://mirror.openshift.com/pub/openshift-v4/clients/oc/latest/linux/oc.tar.gz" -o /tmp/oc.tar.gz \
-    && tar -xzvf /tmp/oc.tar.gz -C /bin \
+    && tar -xzvf /tmp/oc.tar.gz -C /usr/local/bin \
     && rm /tmp/oc.tar.gz \
     && KUBECTL_VERSION=$(curl -s "https://storage.googleapis.com/kubernetes-release/release/stable.txt") \
     && curl -sSLO "https://storage.googleapis.com/kubernetes-release/release/${KUBECTL_VERSION}/bin/linux/amd64/kubectl" \
@@ -54,8 +54,8 @@ LABEL maintainer="Frederic Spiers <fredspiers@gmail.com>" \
 ENV TZ="Europe/Paris" \
     IMG_VERSION="2.0.0"
 
-COPY --from=builder /bin/oc /bin/
-COPY --from=builder /usr/local/bin/kube-score \
+COPY --from=builder /usr/local/bin/oc \
+                    /usr/local/bin/kube-score \
                     /usr/local/bin/kubesec \
                     /usr/local/bin/hadolint \
                     /usr/local/bin/kube-linter \
