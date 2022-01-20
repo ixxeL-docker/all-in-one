@@ -128,10 +128,8 @@ RUN apk update --no-cache \
     echo "end"; \
     } > /root/.config/fish/functions/k.fish
 
-
-RUN apk add --no-cache --update gcc musl-dev python3-dev libffi-dev \
-    && pip3 install --upgrade pip \
-    && pip3 install --no-cache-dir flake8 \
+#RUN pip3 install --upgrade pip \
+RUN pip3 install --no-cache-dir flake8 \
                                    flake8-json \
                                    pytest \
                                    pytest-cov \
@@ -139,11 +137,12 @@ RUN apk add --no-cache --update gcc musl-dev python3-dev libffi-dev \
                                    bandit \
                                    yamlfix \
                                    awxkit \
-                                   ansible-tower-cli \
-                                   cpython \
-                                   wheel \
-                                   checkov \
-    && pip3 uninstall cpython wheel \
+                                   ansible-tower-cli
+    
+RUN apk add --no-cache --update gcc musl-dev python3-dev libffi-dev \
+    && pip3 install --no-cache-dir cpython wheel \
+    && pip3 install --no-cache-dir checkov \
+    && pip3 uninstall --yes cpython wheel \
     && apk del gcc musl-dev python3-dev libffi-dev
 
 RUN npm install -g install-peerdeps \
