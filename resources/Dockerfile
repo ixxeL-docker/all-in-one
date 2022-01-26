@@ -124,7 +124,7 @@ RUN apk update --no-cache \
     && fish -c "kubectl krew install neat" \
     && { \
     echo "function k --wraps kubectl"; \
-    echo '  kubectl $argv'; \
+    echo "  kubectl $argv"; \
     echo "end"; \
     } > /root/.config/fish/functions/k.fish
 
