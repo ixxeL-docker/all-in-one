@@ -4,3 +4,10 @@
 Repository dedicated to build All-in-one Alpine image, which is an images aiming at providing a multi-tools environment for debuging purpose.
 
 - `all-in-one-alpine` image : Container aiming at providing tools for debuging. The image is delivered with Fish Shell and plugins.
+
+This image includes `kaniko`. Kaniko requires following environment variables :
+```Dockerfile
+ENV PATH="/kaniko:$PATH"
+ENV SSL_CERT_DIR="/kaniko/ssl/certs"
+ENV DOCKER_CONFIG="/kaniko/.docker/"
+```
