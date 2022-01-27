@@ -55,15 +55,13 @@ LABEL maintainer="Frederic Spiers <fredspiers@gmail.com>" \
 
 ENV TZ="Europe/Paris" \
     IMG_VERSION="2.0.0" \
-    PATH="/kaniko:$PATH" \
-    SSL_CERT_DIR="/kaniko/ssl/certs" \
-    DOCKER_CONFIG="/kaniko/.docker/"
+    PATH="/kaniko:$PATH"
 
-COPY --from=kaniko /kaniko/executor \
-                   /usr/local/bin/docker-credential-gcr \
-                   /usr/local/bin/docker-credential-ecr-login \
-                   /usr/local/bin/docker-credential-acr-env \
-                   /usr/local/bin/
+COPY --from=kaniko /kaniko/executor /usr/local/bin/executor
+COPY --from=kaniko /kaniko/docker-credential-gcr \
+                   /kaniko/docker-credential-ecr-login \
+                   /kaniko/docker-credential-acr-env \
+                   /kaniko
 
 COPY --from=builder /usr/local/bin/oc \
                     /usr/local/bin/kube-score \
