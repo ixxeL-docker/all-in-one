@@ -98,6 +98,7 @@ RUN apk update --no-cache \
     npm \
     fish \
     fzf \
+    openssl \
     tzdata \
     && cp /usr/share/zoneinfo/${TZ} /etc/localtime \
     && rm -f /var/lib/containers/storage/libpod/bolt_state.db \
