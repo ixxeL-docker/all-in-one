@@ -59,7 +59,12 @@ ENV TZ="Europe/Paris" \
     SSL_CERT_DIR="/kaniko/ssl/certs" \
     DOCKER_CONFIG="/kaniko/.docker/"
 
-COPY --from=kaniko /kaniko/executor /usr/local/bin/executor
+COPY --from=kaniko /kaniko/executor \
+                   /usr/local/bin/docker-credential-gcr \
+                   /usr/local/bin/docker-credential-ecr-login \
+                   /usr/local/bin/docker-credential-acr-env \
+                   /usr/local/bin/
+
 COPY --from=builder /usr/local/bin/oc \
                     /usr/local/bin/kube-score \
                     /usr/local/bin/kubesec \
