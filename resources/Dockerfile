@@ -1,3 +1,5 @@
+FROM gcr.io/kaniko-project/executor:latest as kaniko
+
 FROM alpine:latest AS builder
 
 RUN apk update --no-cache \
@@ -54,6 +56,7 @@ LABEL maintainer="Frederic Spiers <fredspiers@gmail.com>" \
 ENV TZ="Europe/Paris" \
     IMG_VERSION="2.0.0"
 
+COPY --from=kaniko /kaniko/executor /usr/local/bin/executor
 COPY --from=builder /usr/local/bin/oc \
                     /usr/local/bin/kube-score \
                     /usr/local/bin/kubesec \
