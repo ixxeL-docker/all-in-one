@@ -58,10 +58,6 @@ ENV TZ="Europe/Paris" \
     PATH="/kaniko:$PATH"
 
 COPY --from=kaniko /kaniko/executor /usr/local/bin/executor
-COPY --from=kaniko /kaniko/docker-credential-gcr \
-                   /kaniko/docker-credential-ecr-login \
-                   /kaniko/docker-credential-acr-env \
-                   /kaniko/
 
 COPY --from=builder /usr/local/bin/oc \
                     /usr/local/bin/kube-score \
@@ -86,6 +82,7 @@ RUN apk update --no-cache \
     podman \
     skopeo \
     buildah \
+    img \
     git \
     wget \
     curl \
