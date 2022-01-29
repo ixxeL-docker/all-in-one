@@ -3,7 +3,7 @@ FROM gcr.io/kaniko-project/executor:latest as kaniko
 FROM alpine:latest AS builder
 
 RUN apk update --no-cache \
-    && apk add curl --no-cache --update \
+    && apk add curl npm --no-cache --update \
     && curl -o /usr/local/bin/gitlab-helper -s https://s3.eu-central-1.amazonaws.com/valmano-gitlab-helper/gitlab-helper \
     && chmod +x /usr/local/bin/gitlab-helper \
     && curl -sLO "https://github.com/argoproj/argo-cd/releases/latest/download/argocd-linux-amd64" \
@@ -48,7 +48,9 @@ RUN apk update --no-cache \
     && KUBE_SCORE_VER_LIGHT=$(echo "${KUBE_SCORE_VERSION}" | sed 's/v//g') \
     && curl -sL "https://github.com/zegl/kube-score/releases/download/${KUBE_SCORE_VERSION}/kube-score_${KUBE_SCORE_VER_LIGHT}_linux_amd64.tar.gz" | tar -xz \
     && chmod +x kube-score \
-    && mv ./kube-score /usr/local/bin/kube-score
+    && mv ./kube-score /usr/local/bin/kube-score \
+    && npm install -g github-files-fetcher \
+    && fetcher --url="https://github.com/aquasecurity/trivy/tree/main/contrib" --out=/mnt
 
 FROM alpine:latest
 
@@ -77,6 +79,8 @@ COPY --from=builder /usr/local/bin/oc \
                     /usr/local/bin/helm \
                     /usr/local/bin/kubectl \
                     /usr/local/bin/
+                    
+COPY --from=builder /mnt/contrib ./contrib
 
 RUN apk update --no-cache \
     && apk upgrade --no-cache \
