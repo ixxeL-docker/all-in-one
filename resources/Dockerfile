@@ -35,6 +35,7 @@ RUN apk update --no-cache \
     && curl -fL "https://getcli.jfrog.io" | sh \
     && mv jfrog /usr/local/bin \
     && curl -sSfL "https://raw.githubusercontent.com/anchore/grype/main/install.sh" | sh -s -- -b /usr/local/bin \
+    && curl -sSfL "https://raw.githubusercontent.com/anchore/syft/main/install.sh" | sh -s -- -b /usr/local/bin \
     && curl -sLO "https://github.com/hadolint/hadolint/releases/latest/download/hadolint-Linux-x86_64" \
     && chmod +x hadolint-Linux-x86_64 \
     && mv ./hadolint-Linux-x86_64 /usr/local/bin/hadolint \
@@ -72,6 +73,7 @@ COPY --from=builder /usr/local/bin/oc \
                     /usr/local/bin/argo \
                     /usr/local/bin/kubectl-argo-rollouts \
                     /usr/local/bin/grype \
+                    /usr/local/bin/syft \
                     /usr/local/bin/jfrog \
                     /usr/local/bin/envconsul \
                     /usr/local/bin/vault \
