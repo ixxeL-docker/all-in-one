@@ -117,6 +117,7 @@ RUN apk update --no-cache \
     && sed -i "s/driver = \"overlay\"/driver = \"vfs\"/" /etc/containers/storage.conf \
     && apk add trivy --no-cache --update --repository=http://dl-cdn.alpinelinux.org/alpine/edge/testing \
     && ln -s /usr/bin/python3 /usr/bin/python \
+    && helm plugin install "https://github.com/chartmuseum/helm-push" \
     && curl -sLO "https://raw.githubusercontent.com/oh-my-fish/oh-my-fish/master/bin/install" \
     && fish install --noninteractive \
     && rm install \
