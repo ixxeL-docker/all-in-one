@@ -38,3 +38,36 @@ Modify function `name_from_dns` from the file `/musl/src/network/lookup_name.c` 
         if (family == AF_UNSPEC) break;
     }
  ```
+ 
+ once done, you can compile the code with `gcc` docker container :
+ 
+Run `gcc` container :
+```
+docker run --entrypoint=/bin/bash --rm -it --privileged gcc
+```
+
+Clone the `musl` library repository :
+```
+git clone git://git.musl-libc.org/musl
+```
+
+Edit `/musl/src/network/lookup_name.c` and modify the file according to the hack.
+Compile the code :
+```
+./configure && make install
+```
+Copy the library to your host :
+```
+docker cp 0b6a77f89416:/usr/local/musl/lib/libc.so .
+```
+
+Then you can inject it in another container alpine :
+```
+kubectl cp libc.so namespace/pod-name:/mnt
+```
+
+Once copied, move the code to the appropriate location :
+```
+kubectl exec -it pod-name -- sh
+cp /mnt/libc.so /lib/ld-musl-x86_64.so.1
+```
