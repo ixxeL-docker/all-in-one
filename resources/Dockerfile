@@ -62,7 +62,7 @@ ENV TZ="Europe/Paris" \
     IMG_VERSION="2.0.0" \
     PATH="/kaniko:$PATH"
     
-COPY --from=ixxel/musl-dns-hack-alpine /usr/local/musl/lib/libc.so /lib/ld-musl-x86_64.so.1
+COPY --from=ixxel/musl-dns-hack-alpine /lib/ld-musl-x86_64.so.1 /lib/ld-musl-x86_64.so.1
 
 COPY --from=kaniko /kaniko/executor /usr/local/bin/executor
 
