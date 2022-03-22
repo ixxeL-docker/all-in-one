@@ -3,7 +3,7 @@ FROM gcr.io/kaniko-project/executor:latest as kaniko
 FROM alpine:latest AS builder
 
 RUN apk update --no-cache \
-    && apk add curl npm --no-cache --update \
+    && apk add curl npm --no-cache --update \ 
     && curl -o /usr/local/bin/gitlab-helper -s https://s3.eu-central-1.amazonaws.com/valmano-gitlab-helper/gitlab-helper \
     && chmod +x /usr/local/bin/gitlab-helper \
     && curl -sLO "https://github.com/argoproj/argo-cd/releases/latest/download/argocd-linux-amd64" \
