@@ -84,7 +84,7 @@ ARG BUILD_VERSION
     
 ENV TZ="Europe/Paris" \
     PATH="/kaniko:$PATH" \
-    IMG_VERSION="$BUILD_VERSION"
+    IMG_VERSION="2.0.0"
 
 WORKDIR /usr/app
     
