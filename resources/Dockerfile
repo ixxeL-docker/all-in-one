@@ -1,6 +1,6 @@
 # checkov:skip=CKV_DOCKER_2: This is not a running container. Its purpose is to be used in CI pipeline jobs
 # checkov:skip=CKV_DOCKER_3: Kaniko must be root to work
-# checkov:skip=CKV_DOCKER_8: Kaniko must be root to work
+# checkov:skip=CKV_DOCKER_8: Kaniko must be root to work 
 
 FROM alpine:3.16 as builder
 
